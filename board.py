@@ -26,6 +26,19 @@ class Board:
     
     def update(self):
         if self.fin_del_juego == False:
+
+            #Actualiza el desplazamiento vertical del mar
+            for i in range(len(config.y_mar)):
+                    config.y_mar[i] += +1
+                    if config.y_mar[i] > 260:
+                        config.y_mar[i] -= 360
+
+            #Actualiza el desplazamiento vertical del fondo
+            for i in range(len(config.y_fondo)):
+                config.y_fondo[i] += +1
+                if config.y_fondo[i] > 333:
+                    config.y_fondo[i] -= 360
+
             #Si se pulsa la Q se sale del juego
             if pyxel.btnp(pyxel.KEY_Q):
                 pyxel.quit()
@@ -260,11 +273,6 @@ class Board:
         pyxel.blt(167, config.y_mar[1], 2, 0, 160, 57, 95)
         pyxel.blt(167, config.y_mar[2], 2, 0, 160, 57, 95)
         pyxel.blt(167, config.y_mar[3], 2, 0, 160, 57, 95)
-
-        for i in range(len(config.y_mar)):
-            config.y_mar[i] += +1
-            if config.y_mar[i] > 260:
-                config.y_mar[i] -= 360
         
         #figuras fondo
         #nubes
@@ -288,12 +296,6 @@ class Board:
         pyxel.blt(75,config.y_fondo[8], 2, 224, 87, 21, 15, 8)
         pyxel.blt(80,config.y_fondo[12], 2, 204, 60, 53, 21, 8)
         pyxel.blt(130,config.y_fondo[13], 2, 206, 145, 49, 22, 8 )
-
-        #Movemos el fondo
-        for i in range(len(config.y_fondo)):
-            config.y_fondo[i] += +1
-            if config.y_fondo[i] > 333:
-                config.y_fondo[i] -= 360
 
         #Dibujamos el avión
         pyxel.blt(self.player.x, self.player.y, *self.player.sprite)
