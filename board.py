@@ -83,7 +83,7 @@ class Board:
                     self.player.move("left", self.width, self.height)
             
             #Esto actualiza el movimiento de las balas y si sobrepasa los límites se elimina
-            for bala in config.balas:
+            for bala in config.balas[:]:
                 bala.move()
                 if bala.y < -7 or bala.y > self.height + 7 or bala.x < -7 or bala.x > self.width + 7:
                     config.balas.remove(bala)
@@ -104,7 +104,7 @@ class Board:
                     self.player.reset()
                     
             #Aquí definimos las colisiones del jugador con los enemigos
-            for enemigo in config.enemigos:
+            for enemigo in config.enemigos[:]:
                 enemigo.move()
                 enemigo.shoot(self.player.x,self.player.y)
                 if enemigo.is_alive:
@@ -125,7 +125,7 @@ class Board:
                         config.enemigos.remove(enemigo)
 
                 #Aqui definimos las colisiones de las balas con los enemigosy, con el jugador y las acciones tras suceder
-                for bala in config.balas:
+                for bala in config.balas[:]:
                     #Colisiones con enemigos
                     if (enemigo.x + enemigo.sprite[2] > bala.x 
                         and bala.x  + bala.w > enemigo.x
@@ -172,7 +172,7 @@ class Board:
                 bala.impacto()
 
             #Aquí definimos las colisiones con los posibles powerups dropeados por los enemigod
-            for powerup in config.powerup:
+            for powerup in config.powerup[:]:
                 
                 if powerup.definido == False:
                     powerup.tipo(powerup.tipoPow)
