@@ -72,19 +72,19 @@ This project was originally developed in \*\*2022 as part of a university progra
 
 
 
-\* Python
+\* Python 3.x
 
 \* Pyxel
 
 
 
-Pyxel can be installed using:
+Install the project dependencies using:
 
 
 
 ```bash
 
-pip install pyxel
+pip install -r requirements.txt
 
 ```
 
@@ -100,21 +100,21 @@ Clone the repository and navigate to its directory:
 
 ```bash
 
-git clone <repository-url>
+git clone https://github.com/100499164/1942-pyxel.git
 
-cd <repository-name>
+cd 1942-pyxel
 
 ```
 
 
 
-Install Pyxel if necessary:
+Install the required dependencies:
 
 
 
 ```bash
 
-pip install pyxel
+pip install -r requirements.txt
 
 ```
 
@@ -170,7 +170,9 @@ python main.py
 
 ├── player.py
 
-└── powerup.py
+├── powerup.py
+
+└── requirements.txt
 
 ```
 
