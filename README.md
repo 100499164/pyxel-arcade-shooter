@@ -1,80 +1,81 @@
-\# 1942 Arcade Shooter
+<h1 align="center">1942 Arcade Shooter</h1>
 
-![1942 Arcade Shooter gameplay](docs/gameplay.png)
+<p align="center"> A 1942-inspired arcade shoot 'em up developed in <strong>Python</strong> using the <strong>Pyxel</strong> game engine. </p>
 
-A 1942-inspired arcade shoot 'em up developed in \*\*Python\*\* using the \*\*Pyxel\*\* game engine.
+<p align="center"> <img src="docs/gameplay.png" alt="1942 Arcade Shooter gameplay" width="420"> </p>
 
+## About
 
-s
-This project was originally developed in \*\*2022 as part of a university programming course\*\*. It recreates the core gameplay of classic vertical-scrolling arcade shooters, including multiple enemy types, projectile-based combat, power-ups, progressive waves and a scoring system.
+This project was originally developed in 2022 as part of a university programming course and is inspired by Capcom's 1942.
 
+It recreates the core gameplay of classic vertical-scrolling arcade shooters, including multiple enemy types, projectile-based combat, power-ups, progressive waves and a scoring system.
 
+## Features
 
-\## Features
+* Object-oriented implementation of players, enemies and projectiles.
 
+* Multiple enemy types with different movement and attack behaviours.
 
+* Five progressively more difficult enemy waves.
 
-\* Object-oriented implementation of players, enemies and projectiles.
+* Player and enemy projectile systems.
 
-\* Multiple enemy types with different movement and attack behaviours.
+* Collision detection between players, enemies, bullets and power-ups.
 
-\* Five progressively more difficult enemy waves.
+* Dodge mechanic with limited uses.
 
-\* Player and enemy projectile systems.
+* Different power-ups that can:
 
-\* Collision detection between players, enemies, bullets and power-ups.
+  * Increase the player's score.
 
-\* Dodge mechanic with limited uses.
+  * Increase movement speed.
 
-\* Different power-ups that can:
+  * Grant an additional dodge.
 
+  * Grant an additional life.
 
+* Player lives and scoring system.
 
-&#x20; \* Increase the player's score.
+* High-score tracking during the current execution.
 
-&#x20; \* Increase movement speed.
+* Sprite-based animations for movement, impacts and explosions.
 
-&#x20; \* Grant an additional dodge.
-
-&#x20; \* Grant an additional life.
-
-\* Player lives and scoring system.
-
-\* High-score tracking during the current execution.
-
-\* Sprite-based animations for movement, impacts and explosions.
-
-\* Scrolling background inspired by the original \*1942\* arcade game.
+* Scrolling background inspired by the original \*1942\* arcade game.
 
 
 
-\## Controls
 
+## Controls
 
+<p>
+  <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>
+  &nbsp; Move the aircraft
+</p>
 
-| Key          | Action                  |
+<p>
+  <kbd>Space</kbd>
+  &nbsp; Shoot
+</p>
 
-| ------------ | ----------------------- |
+<p>
+  <kbd>Z</kbd>
+  &nbsp; Perform a dodge
+</p>
 
-| `Arrow Keys` | Move the aircraft       |
+<p>
+  <kbd>Q</kbd>
+  &nbsp; Quit the game
+</p>
 
-| `Space`      | Shoot                   |
+<p>
+  <kbd>R</kbd>
+  &nbsp; Restart after Game Over
+</p>
 
-| `Z`          | Perform a dodge         |
+## Requirements
 
-| `Q`          | Quit the game           |
-
-| `R`          | Restart after Game Over |
-
-
-
-\## Requirements
-
-
-
-\* Python 3.x
-
-\* Pyxel
+* Python 3.x
+* Pyxel
 
 
 
@@ -90,7 +91,7 @@ pip install -r requirements.txt
 
 
 
-\## Running the Game
+## Running the Game
 
 
 
@@ -132,61 +133,41 @@ python main.py
 
 
 
-\## Project Structure
-
-
+## Project Structure
 
 ```text
-
 .
-
 ├── Assets/
-
-│   └── banco\_general.pyxres
-
+│   └── banco_general.pyxres
+├── docs/
+│   └── gameplay.png
 ├── avion.py
-
 ├── bala.py
-
 ├── balaEnemigo.py
-
 ├── balaPlayer.py
-
 ├── board.py
-
 ├── config.py
-
 ├── enemigo.py
-
 ├── enemigoBombardero.py
-
 ├── enemigoRegular.py
-
 ├── enemigoRojo.py
-
 ├── enemigoSuperbombardero.py
-
 ├── main.py
-
 ├── player.py
-
 ├── powerup.py
-
 └── requirements.txt
-
 ```
 
+## Development
 
+This repository contains the original university project together with later maintenance, bug fixes and refactoring improvements aimed at improving code quality and maintainability.
 
-\## About the Project
+## Disclaimer & Copyright
 
+This is a **non-commercial, academic project** created strictly for educational, portfolio, and demonstrative purposes. 
 
+* **Codebase:** All python scripts (`.py` files) and structural logic are original work.
+* **Visual Assets:** The `banco_general.pyxres` file includes original sprite sheets and graphics extracted from the classic **1942** arcade game (1984), which is a registered trademark and intellectual property of **Capcom Co., Ltd.**
+* **Fair Use:** This project is not endorsed by, affiliated with, or linked to Capcom. Resource usage qualifies under "Fair Use" guidelines for academic review and non-profit educational purposes. 
 
-This project was originally created in \*\*2022 as part of a university programming course\*\* and is based on the gameplay of Capcom's \*1942\*.
-
-
-
-The current repository preserves the original implementation while serving as a base for further maintenance, refactoring and improvements.
-
-
-
+*If you are a copyright representative for Capcom and wish to have the original visual assets removed from this educational repository, please open an Issue or contact me directly, and they will be promptly replaced with generic shapes.*
