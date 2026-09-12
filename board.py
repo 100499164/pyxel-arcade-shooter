@@ -99,19 +99,7 @@ class Board:
             self.update_bullets()
                 
             #Aquí se define la muerte del jugador y el reseteo de puntos como también su guardado
-            if self.player.inmunidad and self.player.vidaperdida == False:
-                self.player.muerte()
-
-                if self.player.finMuerte == True:
-                    if self.player.lives <= 0:
-                        self.fin_del_juego = True
-                        config.lista_record.append(config.pts)
-                        config.pts = 0
-                    else:
-                        config.enemigos.clear()
-                        config.balas.clear()
-
-                    self.player.reset()
+            self.handle_player_death()
                     
             #Aquí definimos las colisiones del jugador con los enemigos
             for enemigo in config.enemigos[:]:
@@ -121,9 +109,7 @@ class Board:
                     if self.enemy_collides_with_player(enemigo) and self.player.inmunidad == False:
                         enemigo.is_alive = False
                         config.pts -= enemigo.puntos
-                        self.player.lives -= 1
-                        self.player.vidaperdida = False
-                        self.player.inmunidad = True
+                        self.damage_player()
 
                     self.handle_enemy_death(enemigo)
 
@@ -145,11 +131,9 @@ class Board:
                     if self.bullet_collides_with_player(bala) and bala.categoria == "Enemigo" and self.player.inmunidad == False:
                         bala.is_alive = False
                         config.balas.remove(bala)
-                        self.player.lives -= 1
-                        self.player.vidaperdida = False
-                        self.player.inmunidad = True
+                        self.damage_player()
 
-                
+
                 if (enemigo.y <= -40 or enemigo.y >= config.H_BOARD + 40 or enemigo.x >= config.W_BOARD + 20):
                     config.enemigos.remove(enemigo)
                 
@@ -250,14 +234,36 @@ class Board:
             and powerup.y + powerup.sprite[3] > self.player.y
         )
 
-    # Gestiona la muerte de un enemigo
+    #Gestiona la muerte de un enemigo
     def handle_enemy_death(self, enemigo):
         if enemigo.is_alive == False and enemigo.is_dead == False:
             enemigo.is_dead = True
             config.enemigosMuertos.append(enemigo)
             config.enemigos.remove(enemigo)
 
-    # Actualiza los power-ups y gestiona su recogida por el jugador
+    #Gestiona la muerte del jugador y el reseteo tras perder una vida
+    def handle_player_death(self):
+        if self.player.inmunidad and self.player.vidaperdida == False:
+            self.player.muerte()
+
+            if self.player.finMuerte == True:
+                if self.player.lives <= 0:
+                    self.fin_del_juego = True
+                    config.lista_record.append(config.pts)
+                    config.pts = 0
+                else:
+                    config.enemigos.clear()
+                    config.balas.clear()
+
+                self.player.reset()
+
+    #Aplica daño al jugador y activa su estado de inmunidad
+    def damage_player(self):
+        self.player.lives -= 1
+        self.player.vidaperdida = False
+        self.player.inmunidad = True
+
+    #Actualiza los power-ups y gestiona su recogida por el jugador
     def update_powerups(self):
         for powerup in config.powerup[:]:
 
