@@ -149,13 +149,10 @@ class Board:
                         self.player.vidaperdida = False
                         self.player.inmunidad = True
 
-                if enemigo.y <= -40:
-                        enemigo.is_alive = False
-                if enemigo.y >= config.H_BOARD + 40:
-                        enemigo.is_alive = False
-                if enemigo.x >= config.W_BOARD + 20:
-                        enemigo.is_alive = False
-            
+                
+                if (enemigo.y <= -40 or enemigo.y >= config.H_BOARD + 40 or enemigo.x >= config.W_BOARD + 20):
+                    config.enemigos.remove(enemigo)
+                
             #Esto ejecuta la animación de muerte de los enemigos
             for enemigo in config.enemigosMuertos:
                 enemigo.muerte()
@@ -207,22 +204,8 @@ class Board:
         
         #Si se acaba el juego se eliminan todo lo creado en la partida y se restablecen las variables modificadas
         if self.fin_del_juego == True:
-            config.enemigos.clear()
-            config.enemigosMuertos.clear()
-            config.impactoBala.clear()
-            config.balas.clear()
-            config.powerup.clear()
-            config.main_plane_speed = 3
-            config.cant_enem = 2
-             
-            #Al presionar la R el juego se reinicia
-            if pyxel.btn(pyxel.KEY_R):
-                self.player.lives = 3
-                self.player.dodge = 3
-                config.num_oleada = 0
+            self.handle_game_over()
 
-                self.fin_del_juego = False
-                config.oleadas = [list(config.OLEADA1), list(config.OLEADA2), list(config.OLEADA3), list(config.OLEADA4), list(config.OLEADA5), [0, 0, 0, 0] ]
 
     #Esto actualiza el movimiento de las balas y si sobrepasa los límites se elimina                    
     def update_bullets(self):
@@ -290,6 +273,26 @@ class Board:
                 config.morelive = 0
                 config.moredodge = 0
                 config.powerup.remove(powerup)
+
+    # Gestiona el estado de fin de partida y permite reiniciar el juego
+    def handle_game_over(self):
+        config.enemigos.clear()
+        config.enemigosMuertos.clear()
+        config.impactoBala.clear()
+        config.balas.clear()
+        config.powerup.clear()
+        config.main_plane_speed = 3
+        config.cant_enem = 2
+
+        #Al presionar la R el juego se reinicia
+        if pyxel.btn(pyxel.KEY_R):
+            self.player.lives = 3
+            self.player.dodge = 3
+            config.num_oleada = 0
+
+            self.fin_del_juego = False
+            config.oleadas = [list(config.OLEADA1), list(config.OLEADA2), list(config.OLEADA3), list(config.OLEADA4), list(config.OLEADA5), [0, 0, 0, 0] ]
+
     #Dibujo el fondo y el sprite del jugador, junto a las balas y los enemigos
     def draw(self):
         #color base del fondo
