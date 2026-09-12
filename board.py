@@ -94,12 +94,9 @@ class Board:
                     self.player.move('right', self.width, self.height)
             if pyxel.btn(pyxel.KEY_LEFT):
                     self.player.move("left", self.width, self.height)
-            
-            #Esto actualiza el movimiento de las balas y si sobrepasa los límites se elimina
-            for bala in config.balas[:]:
-                bala.move()
-                if bala.y < -7 or bala.y > self.height + 7 or bala.x < -7 or bala.x > self.width + 7:
-                    config.balas.remove(bala)
+
+            # Actualizamos las balas
+            self.update_bullets()
                 
             #Aquí se define la muerte del jugador y el reseteo de puntos como también su guardado
             if self.player.inmunidad and self.player.vidaperdida == False:
@@ -121,29 +118,19 @@ class Board:
                 enemigo.move()
                 enemigo.shoot(self.player.x,self.player.y)
                 if enemigo.is_alive:
-                    if (enemigo.x + enemigo.sprite[2] >self.player.x 
-                            and self.player.x + self.player.sprite[3] > enemigo.x
-                            and enemigo.y + enemigo.sprite[3] > self.player.y 
-                            and self.player.y + self.player.sprite[4]  > enemigo.y
-                            ) and self.player.inmunidad == False:
+                    if self.enemy_collides_with_player(enemigo) and self.player.inmunidad == False:
                         enemigo.is_alive = False
                         config.pts -= enemigo.puntos
                         self.player.lives -= 1
                         self.player.vidaperdida = False
                         self.player.inmunidad = True
 
-                    if enemigo.is_alive == False and enemigo.is_dead == False:
-                        enemigo.is_dead = True
-                        config.enemigosMuertos.append(enemigo)
-                        config.enemigos.remove(enemigo)
+                    self.handle_enemy_death(enemigo)
 
                 #Aqui definimos las colisiones de las balas con los enemigosy, con el jugador y las acciones tras suceder
                 for bala in config.balas[:]:
                     #Colisiones con enemigos
-                    if (enemigo.x + enemigo.sprite[2] > bala.x 
-                        and bala.x  + bala.w > enemigo.x
-                        and enemigo.y + enemigo.sprite[3] > bala.y 
-                        and bala.y + bala.h > enemigo.y) and bala.categoria == "player":
+                    if self.bullet_collides_with_enemy(bala, enemigo) and bala.categoria == "player":
                         enemigo.vidas -= bala.bulletDamage
                         if enemigo.vidas <= 0:
                             enemigo.is_alive = False
@@ -152,17 +139,10 @@ class Board:
                         bala.is_alive = False
                         config.balas.remove(bala)
                         
-                    if enemigo.is_alive == False and enemigo.is_dead == False:
-                        enemigo.is_dead = True
-                        config.enemigosMuertos.append(enemigo)
-                        config.enemigos.remove(enemigo)
+                    self.handle_enemy_death(enemigo)
 
                     #Colisiones con jugador
-                    if (self.player.x + self.player.sprite[3] > bala.x 
-                        and bala.x  + bala.w  > self.player.x
-                        and self.player.y + self.player.sprite[4] > bala.y 
-                        and bala.y  + bala.h   > self.player.y
-                        ) and bala.categoria == "Enemigo" and self.player.inmunidad == False:
+                    if self.bullet_collides_with_player(bala) and bala.categoria == "Enemigo" and self.player.inmunidad == False:
                         bala.is_alive = False
                         config.balas.remove(bala)
                         self.player.lives -= 1
@@ -185,23 +165,7 @@ class Board:
                 bala.impacto()
 
             #Aquí definimos las colisiones con los posibles powerups dropeados por los enemigod
-            for powerup in config.powerup[:]:
-                
-                if powerup.definido == False:
-                    powerup.tipo(powerup.tipoPow)
-                    powerup.definido = True
-                powerup.move()
-                
-                if (self.player.x + self.player.sprite[3] > powerup.x 
-                        and powerup.x  + powerup.sprite[2]  > self.player.x
-                        and self.player.y + self.player.sprite[4] > powerup.y 
-                        and powerup.y  + powerup.sprite[3]   > self.player.y) and self.player.is_alive == True:
-                    powerup.accion()
-                    self.player.lives += config.morelive
-                    self.player.dodge += config.moredodge
-                    config.morelive = 0
-                    config.moredodge = 0
-                    config.powerup.remove(powerup)
+            self.update_powerups()
             
             #Esto limita la cantidad de enemigos por pantalla dependiendo de la oleada en la que nos encontremos y crea los enemigos restantes
             if len(config.enemigos) < config.cant_enem:
@@ -259,7 +223,73 @@ class Board:
 
                 self.fin_del_juego = False
                 config.oleadas = [list(config.OLEADA1), list(config.OLEADA2), list(config.OLEADA3), list(config.OLEADA4), list(config.OLEADA5), [0, 0, 0, 0] ]
-                      
+
+    #Esto actualiza el movimiento de las balas y si sobrepasa los límites se elimina                    
+    def update_bullets(self):
+        for bala in config.balas[:]:
+            bala.move()
+            if bala.y < -7 or bala.y > self.height + 7 or bala.x < -7 or bala.x > self.width + 7:
+                config.balas.remove(bala)
+
+    #Comprueba si el enemigo colisiona con el jugador
+    def enemy_collides_with_player(self, enemigo):
+        return (
+            enemigo.x + enemigo.sprite[2] > self.player.x
+            and self.player.x + self.player.sprite[3] > enemigo.x
+            and enemigo.y + enemigo.sprite[3] > self.player.y
+            and self.player.y + self.player.sprite[4] > enemigo.y
+        )
+
+    #Comprueba si una bala colisiona con un enemigo
+    def bullet_collides_with_enemy(self, bala, enemigo):
+        return (
+            enemigo.x + enemigo.sprite[2] > bala.x
+            and bala.x + bala.w > enemigo.x
+            and enemigo.y + enemigo.sprite[3] > bala.y
+            and bala.y + bala.h > enemigo.y
+        )
+
+    #Comprueba si una bala colisiona con el jugador
+    def bullet_collides_with_player(self, bala):
+        return (
+            self.player.x + self.player.sprite[3] > bala.x
+            and bala.x + bala.w > self.player.x
+            and self.player.y + self.player.sprite[4] > bala.y
+            and bala.y + bala.h > self.player.y
+        )
+
+    #Comprueba si un power-up colisiona con el jugador
+    def powerup_collides_with_player(self, powerup):
+        return (
+            self.player.x + self.player.sprite[3] > powerup.x
+            and powerup.x + powerup.sprite[2] > self.player.x
+            and self.player.y + self.player.sprite[4] > powerup.y
+            and powerup.y + powerup.sprite[3] > self.player.y
+        )
+
+    # Gestiona la muerte de un enemigo
+    def handle_enemy_death(self, enemigo):
+        if enemigo.is_alive == False and enemigo.is_dead == False:
+            enemigo.is_dead = True
+            config.enemigosMuertos.append(enemigo)
+            config.enemigos.remove(enemigo)
+
+    # Actualiza los power-ups y gestiona su recogida por el jugador
+    def update_powerups(self):
+        for powerup in config.powerup[:]:
+
+            if powerup.definido == False:
+                powerup.tipo(powerup.tipoPow)
+                powerup.definido = True
+            powerup.move()
+
+            if self.powerup_collides_with_player(powerup) and self.player.is_alive == True:
+                powerup.accion()
+                self.player.lives += config.morelive
+                self.player.dodge += config.moredodge
+                config.morelive = 0
+                config.moredodge = 0
+                config.powerup.remove(powerup)
     #Dibujo el fondo y el sprite del jugador, junto a las balas y los enemigos
     def draw(self):
         #color base del fondo
