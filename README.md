@@ -168,6 +168,6 @@ This is a **non-commercial, academic project** created strictly for educational,
 
 * **Codebase:** All python scripts (`.py` files) and structural logic are original work.
 * **Visual Assets:** The `banco_general.pyxres` file includes original sprite sheets and graphics extracted from the classic **1942** arcade game (1984), which is a registered trademark and intellectual property of **Capcom Co., Ltd.**
-* **Fair Use:** This project is not endorsed by, affiliated with, or linked to Capcom. Resource usage qualifies under "Fair Use" guidelines for academic review and non-profit educational purposes. 
+* **No Affiliation**: This project is not affiliated with, endorsed by, or associated with Capcom.
 
 *If you are a copyright representative for Capcom and wish to have the original visual assets removed from this educational repository, please open an Issue or contact me directly, and they will be promptly replaced with generic shapes.*
