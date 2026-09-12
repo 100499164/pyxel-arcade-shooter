@@ -1,11 +1,11 @@
 \# 1942 Arcade Shooter
 
-
+![1942 Arcade Shooter gameplay](docs/gameplay.png)
 
 A 1942-inspired arcade shoot 'em up developed in \*\*Python\*\* using the \*\*Pyxel\*\* game engine.
 
 
-
+s
 This project was originally developed in \*\*2022 as part of a university programming course\*\*. It recreates the core gameplay of classic vertical-scrolling arcade shooters, including multiple enemy types, projectile-based combat, power-ups, progressive waves and a scoring system.
 
 
