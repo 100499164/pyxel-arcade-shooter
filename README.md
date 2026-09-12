@@ -74,8 +74,8 @@ It recreates the core gameplay of classic vertical-scrolling arcade shooters, in
 
 ## Requirements
 
-* Python 3.x
-* Pyxel
+* Python 3.11 or later
+* Pyxel 2.9.6
 
 
 
